@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>infastracture — Minimal Open Source Infrastructure Tools for Linux</title>
+    <meta name="description" content="infastracture builds minimal, fast, open-source Linux infrastructure tools including Atmos Hyprland OS, cmshell, inSeaBIOS, and proboot. Designed for ricers and power users.">
+    <meta name="keywords" content="infastracture, hyprland os, minimal shell, linux bootloader, open source bios, cmshell, atmos, proboot, inseaBIOS, ricing linux, minimal linux tools">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="infastracture — Minimal Open Source Infrastructure Tools for Linux">
+    <meta property="og:description" content="From firmware to shell, bootloader to desktop OS. Minimal, fast, and beautiful open-source tools for Linux.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://infastracture.xyz/">
+    <link rel="canonical" href="https://infastracture.xyz/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "infastracture",
+        "url": "https://infastracture.xyz",
+        "description": "Open source infrastructure tools for Linux",
+        "sameAs": ["https://github.com/infastracture"]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is infastracture?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "infastracture is an open-source project that builds minimal, fast infrastructure tools for Linux, including a Hyprland-based desktop OS, a lightweight shell, a BIOS implementation, and a Rust-based bootloader."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is Atmos?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Atmos is a Hyprland-based Linux desktop OS with a pre-configured cool theme, custom animations, and a complete workflow out of the box. It is designed for users who want a beautiful desktop without spending hours configuring dotfiles."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is cmshell?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "cmshell is a minimal UNIX shell written in C. It produces a binary under 5KB with zero runtime dependencies, making it ideal for ricing setups and minimal Linux distributions."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is infastracture free to use?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. All infastracture projects are open source under MIT or GPL licenses. There is no premium tier, no telemetry, and no hidden costs."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How can I support infastracture?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "You can support infastracture by donating via PayPal, starring the GitHub repositories, or joining the Discord community to provide feedback."
+                }
+            }
+        ]
+    }
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 0%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+        .blue-gradient-animated {
+            background: linear-gradient(-45deg, #0a1628, #0d2847, #0f3460, #1a5276, #0b3d91, #162447, #1b3a5c, #0a1628);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+        .blue-gradient-card {
+            background: linear-gradient(-45deg, rgba(13,40,71,0.8), rgba(11,61,145,0.6), rgba(22,36,71,0.8));
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+        }
+        .glass-nav {
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .glass-card {
+            background: rgba(13, 40, 71, 0.35);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+        .glass-card-hover:hover {
+            background: rgba(13, 40, 71, 0.55);
+            border-color: rgba(56, 189, 248, 0.25);
+        }
+        .glow-blue { box-shadow: 0 0 60px rgba(56, 189, 248, 0.12), 0 0 120px rgba(37, 99, 235, 0.06); }
+        .text-glow { text-shadow: 0 0 40px rgba(56, 189, 248, 0.25); }
+        .code-block { background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255,255,255,0.06); }
+        .feature-icon { background: linear-gradient(135deg, rgba(56,189,248,0.12), rgba(37,99,235,0.12)); border: 1px solid rgba(56,189,248,0.18); }
+        .stat-number { background: linear-gradient(135deg, #38bdf8, #2563eb, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); transition: all 200ms; }
+        .btn-primary:hover { background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 0 30px rgba(37, 99, 235, 0.4); transform: translateY(-1px); }
+        .btn-secondary { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); transition: all 200ms; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+        .btn-wip { background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.15); cursor: default; }
+        .donate-card { background: rgba(13, 40, 71, 0.3); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.07); transition: all 300ms; cursor: pointer; }
+        .donate-card:hover { background: rgba(13, 40, 71, 0.55); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 0 50px rgba(56, 189, 248, 0.1); transform: translateY(-6px); }
+        .donate-card.selected { border-color: rgba(56, 189, 248, 0.6); box-shadow: 0 0 50px rgba(56, 189, 248, 0.2); background: rgba(13, 40, 71, 0.6); }
+        .donate-card.selected .donate-check { opacity: 1; transform: scale(1); }
+        .donate-check { opacity: 0; transform: scale(0.5); transition: all 200ms; }
+        .timeline-line { background: linear-gradient(to bottom, transparent, rgba(56,189,248,0.4), transparent); }
+        .project-tag { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.2); color: #7dd3fc; }
+        .wip-tag { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.25); color: #fbbf24; }
+        .grid-bg { background-image: linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+        .noise-overlay::before { content: ''; position: absolute; inset: 0; opacity: 0.015; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .float-anim { animation: float 6s ease-in-out infinite; }
+        @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.8); opacity: 0; } }
+        .pulse-ring::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid rgba(56,189,248,0.4); animation: pulse-ring 2s ease-out infinite; }
+        .scroll-indicator { animation: float 2s ease-in-out infinite; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding-top: 0; padding-bottom: 0; }
+        .faq-answer.open { max-height: 300px; padding-top: 0.75rem; padding-bottom: 0.25rem; }
+        .faq-chevron { transition: transform 0.3s ease; }
+        .faq-chevron.open { transform: rotate(180deg); }
+        .content-section p { margin-bottom: 1.25rem; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a1628; }
+        ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+    </style>
+</head>
+<body class="font-sans text-white antialiased blue-gradient-animated noise-overlay relative overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-40 h-16">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center font-semibold text-sm">i</div>
+                <span class="font-semibold text-white tracking-tight">infastracture</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#projects" class="text-sm text-neutral-400 hover:text-white transition-colors">Projects</a>
+                <a href="#about" class="text-sm text-neutral-400 hover:text-white transition-colors">About</a>
+                <a href="#features" class="text-sm text-neutral-400 hover:text-white transition-colors">Features</a>
+                <a href="#roadmap" class="text-sm text-neutral-400 hover:text-white transition-colors">Roadmap</a>
+                <a href="#faq" class="text-sm text-neutral-400 hover:text-white transition-colors">FAQ</a>
+                <a href="#contribute" class="text-sm text-sky-400 hover:text-sky-300 transition-colors font-medium">Contribute</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="https://github.com/infastracture" target="_blank" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <span class="iconify" data-icon="mdi:github" data-width="16"></span>
+                    <span class="hidden sm:inline">GitHub</span>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-neutral-400 hover:text-white">
+                    <span class="iconify" data-icon="mdi:menu" data-width="24"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="mobile-menu-overlay"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-72 bg-[#0d1f3c] border-l border-white/10 p-6 flex flex-col">
+            <div class="flex justify-between items-center mb-8">
+                <span class="font-semibold">Menu</span>
+                <button id="mobile-menu-close" class="p-2 text-neutral-400 hover:text-white">
+                    <span class="iconify" data-icon="mdi:close" data-width="24"></span>
+                </button>
+            </div>
+            <div class="flex flex-col gap-4">
+                <a href="#projects" class="text-neutral-400 hover:text-white transition-colors py-2 mobile-link">Projects</a>
+                <a href="#about" class="text-neutral-400 hover:text-white transition-colors py-2 mobile-link">About</a>
+                <a href="#features" class="text-neutral-400 hover:text-white transition-colors py-2 mobile-link">Features</a>
+                <a href="#roadmap" class="text-neutral-400 hover:text-white transition-colors py-2 mobile-link">Roadmap</a>
+                <a href="#faq" class="text-neutral-400 hover:text-white transition-colors py-2 mobile-link">FAQ</a>
+                <a href="#contribute" class="text-sky-400 hover:text-sky-300 transition-colors py-2 font-medium mobile-link">Contribute</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="relative min-h-screen flex items-center justify-center pt-24 pb-20 px-6 grid-bg">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl float-anim"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-sky-400/5 rounded-full blur-3xl float-anim" style="animation-delay: -3s;"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-sky-500/20 bg-sky-500/5 mb-8">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 relative pulse-ring"></span>
+                <span class="text-xs font-medium text-sky-300 tracking-wide">Open Source · Always Free</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] mb-6 text-glow">
+                Building the
+                <span class="bg-gradient-to-r from-sky-400 via-blue-400 to-violet-400 bg-clip-text text-transparent"> infrastructure</span>
+                <br>you deserve.
+            </h1>
+            <p class="text-lg md:text-xl text-neutral-400 font-light leading-relaxed max-w-2xl mx-auto mb-6">
+                From firmware to shell, bootloader to desktop OS — we craft minimal, fast, and beautiful open-source tools for people who care about every byte.
+            </p>
+            <p class="text-base text-neutral-500 font-light leading-relaxed max-w-xl mx-auto mb-10">
+                infastracture is a collection of Linux infrastructure projects designed for power users, system administrators, and the ricing community. Every tool is built from scratch with a focus on performance, minimalism, and clean code.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                <a href="#projects" class="btn-primary px-8 py-3.5 rounded-xl text-sm font-semibold flex items-center gap-2">
+                    Explore Projects
+                    <span class="iconify" data-icon="mdi:arrow-right" data-width="18"></span>
+                </a>
+                <a href="https://github.com/infastracture" target="_blank" class="btn-secondary px-8 py-3.5 rounded-xl text-sm font-medium flex items-center gap-2">
+                    <span class="iconify" data-icon="mdi:github" data-width="18"></span>
+                    Star on GitHub
+                </a>
+            </div>
+            <div class="code-block rounded-2xl p-1 max-w-xl mx-auto glow-blue">
+                <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+                    <div class="w-3 h-3 rounded-full bg-red-500/70"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/70"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/70"></div>
+                    <span class="text-[11px] text-neutral-500 ml-2 font-mono">terminal</span>
+                </div>
+                <div class="p-5 text-left font-mono text-sm leading-7">
+                    <div><span class="text-sky-400">$</span> <span class="text-neutral-300">git clone https://github.com/infastracture/cmshell</span></div>
+                    <div><span class="text-sky-400">$</span> <span class="text-neutral-300">cd cmshell && make install</span></div>
+                    <div><span class="text-emerald-400">✓</span> <span class="text-neutral-500">Installed to /usr/local/bin/cmshell</span></div>
+                    <div><span class="text-sky-400">$</span> <span class="text-neutral-300">cmshell</span></div>
+                    <div class="text-sky-300">→ minimal shell for ricers. loaded.</div>
+                    <div class="flex items-center"><span class="text-sky-400">❯</span> <span class="w-2 h-5 bg-sky-400/70 animate-pulse ml-1"></span></div>
+                </div>
+            </div>
+            <div class="scroll-indicator mt-12 flex flex-col items-center gap-2">
+                <span class="text-[10px] uppercase tracking-[0.2em] text-neutral-600">Scroll</span>
+                <span class="iconify text-neutral-600" data-icon="mdi:chevron-down" data-width="20"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6">
+        <div class="max-w-3xl mx-auto content-section">
+            <span class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400 mb-4 block">About infastracture</span>
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-6">What is infastracture?</h2>
+            <p class="text-neutral-400 font-light leading-relaxed text-base">
+                infastracture is an open-source project organization focused on building foundational Linux infrastructure tools. The name is a play on "infrastructure" — because every great system needs a solid foundation underneath it.
+            </p>
+            <p class="text-neutral-400 font-light leading-relaxed text-base">
+                The project was born out of frustration with existing tools that have grown bloated over decades. Bash is over 2,000 lines of shell script. GRUB carries legacy code from the 1990s. SeaBIOS supports hardware that nobody uses anymore. We believe there is a better way — tools that do one thing, do it fast, and get out of your way.
+            </p>
+            <p class="text-neutral-400 font-light leading-relaxed text-base">
+                Currently, infastracture maintains four projects spanning the entire Linux stack: a desktop operating system called <a href="https://atmos.infastracture.xyz" class="text-sky-400 hover:text-sky-300 transition-colors">Atmos</a>, a minimal shell called <a href="https://github.com/infastracture/cmshell" class="text-sky-400 hover:text-sky-300 transition-colors">cmshell</a>, a lightweight BIOS implementation called inSeaBIOS, and a Rust-based bootloader called proboot. Each project is independently useful, but together they represent a vision of what a minimal Linux system can look like from the ground up.
+            </p>
+            <p class="text-neutral-400 font-light leading-relaxed text-base">
+                All projects are released under permissive open-source licenses. There are no premium tiers, no telemetry, no data collection, and no phone-home mechanisms. The source code is the documentation. If you can read the code, you understand the tool.
+            </p>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400 mb-4 block">Our Projects</span>
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Open source Linux tools, <span class="text-sky-400">built different</span></h2>
+                <p class="text-neutral-400 font-light max-w-2xl mx-auto">
+                    Every project under the infastracture umbrella is designed to be minimal, fast, and opinionated. We do not try to be everything for everyone — we build tools that we ourselves want to use every day.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Atmos -->
+                <div class="glass-card glass-card-hover rounded-2xl p-8 group relative overflow-hidden transition-all duration-300">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-sky-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-sky-500/10 transition-colors duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="feature-icon w-14 h-14 rounded-2xl flex items-center justify-center">
+                                <span class="iconify text-sky-400" data-icon="mdi:desktop-mac" data-width="28"></span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="project-tag text-[10px] px-2.5 py-1 rounded-full font-mono">Hyprland</span>
+                                <span class="project-tag text-[10px] px-2.5 py-1 rounded-full font-mono">OS</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold tracking-tight mb-2">Atmos — Hyprland OS with Cool Theme</h3>
+                        <p class="text-neutral-400 font-light leading-relaxed mb-4">
+                            Atmos is a complete Linux desktop distribution built around Hyprland, the popular Wayland tiling compositor. Unlike other Hyprland-based distros that hand you a bare config and wish you luck, Atmos comes with a carefully designed visual theme out of the box.
+                        </p>
+                        <p class="text-neutral-500 font-light leading-relaxed mb-6 text-sm">
+                            The default theme uses a Catppuccin-inspired blue palette with custom border colors, smooth fade and slide animations, and a consistent look across Waybar, wofi, and GTK applications. It is ISO-ready, meaning you can flash it to a USB drive and install it on bare metal in minutes. The upcoming Atmos 27.1 release will be built on the next version of Hyprland with a redesigned theme engine and GTK4 support.
+                        </p>
+                        <ul class="space-y-2.5 mb-8">
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+                                <span class="iconify text-sky-400/70" data-icon="mdi:check-circle" data-width="16"></span>
+                                Pre-configured Hyprland with Waybar and wofi
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+                                <span class="iconify text-sky-400/70" data-icon="mdi:check-circle" data-width="16"></span>
+                                Custom Catppuccin-inspired blue theme throughout
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+                                <span class="iconify text-sky-400/70" data-icon="mdi:check-circle" data-width="16"></span>
+                                Smooth border and fade animations configured by default
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+                                <span class="iconify text-sky-400/70" data-icon="mdi:check-circle" data-width="16"></span>
+                                ISO image for bare-metal installation via dd or Ventoy
+                            </li>
+                        </ul>
+                        <a href="https://atmos.infastracture.xyz" target="_blank" class="btn-primary px-5 py-2.5 rounded-lg text-sm font-medium inline-flex items-center gap-2">
+                            <span class="iconify" data-icon="mdi:open-in-new" data-width="16"></span>
+                            Visit Atmos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- cmshell -->
+                <div class="glass-card glass-card-hover rounded-2xl p-8 group relative overflow-hidden transition-all duration-300">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-emerald-500/10 transition-colors duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="feature-icon w-14 h-14 rounded-2xl flex items-center justify-center">
+                                <span class="iconify text-emerald-400" data-icon="mdi:console-line" data-width="28"></span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="project-tag text-[10px] px-2.5 py-1 rounded-full font-mono">Shell</span>
+                                <span class="project-tag text-[10px] px-2.5 py-1 rounded-full font-mono">C</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold tracking-tight mb-2">cmshell — Minimal Shell for Ricers</h3>
+                        <p class="text-neutral-400 font-light leading-relaxed mb-4">
+                            cmshell is a lightweight UNIX shell written from scratch in C. The entire project compiles to a binary under 5 kilobytes with absolutely zero runtime dependencies — no libc wrappers, no shared libraries, no external config parsers.
+                        </p>
+                        <p class="text-neutral-500 font-light leading-relaxed mb-6 text-sm">
+                            Despite its tiny size, cmshell includes features that ricing enthusiasts actually need: customizable ANSI-colored prompts, tab completion for commands and file paths, command history with up/down arrow navigation, and a clean config file format. It is designed as a drop-in alternative to bash or zsh for users who want a faster, lighter terminal experience without giving up the features that make their setup look good.
+                        </p>
+                        <ul class="space-y-2.5 mb-8">
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+                                <span class="iconify text-emerald-400/70" data-icon="mdi:check-circle" data-width="16"></span>
+                                Less than 5KB compiled binary, zero dependencies
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+                                <span class="iconify text-emerald-400/70" data-icon="mdi:check-circle" data-width="16"></span>
+                                Customizable prompt with full ANSI color support
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+                                <span class="iconify text-emerald-400/70" data-icon="mdi:check-circle" data-width="16"></span>
+                                Built-in tab completion and command history
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-400">
+                                <span class="iconify text-emerald-400/70" data-icon="mdi:check-circle" data-width="16"></span>
+                                Ideal for ricing setups, minimal distros, and containers
+                            </li>
+                        </ul>
+                        <a href="https://github.com/infastracture/cmshell" target="_blank" class="btn-primary px-5 py-2.5 rounded-lg text-sm font-medium inline-flex items-center gap-2">
+                            <span class="iconify" data-icon="mdi:github" data-width="16"></span>
+                            View on GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- inSeaBIOS -->
+                <div class="glass-card rounded-2xl p-8 group relative overflow-hidden transition-all duration-300 opacity-80">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-violet-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="feature-icon w-14 h-14 rounded-2xl flex items-center justify-center">
+                                <span class="iconify text-violet-400" data-icon="mdi:chip" data-width="28"></span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="wip-tag text-[10px] px-2.5 py-1 rounded-full font-mono">WIP</span>
+                                <span class="project-tag text-[10px] px-2.5 py-1 rounded-full font-mono">Firmware</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold tracking-tight mb-2">inSeaBIOS — Lightweight Open Source BIOS</h3>
+                        <p class="text-neutral-400 font-light leading-relaxed mb-4">
+                            inSeaBIOS is a stripped-down fork of SeaBIOS, the standard open-source x86 BIOS implementation used in QEMU and many embedded systems. The goal is to remove decades of legacy hardware support that most users do not need.
+                        </p>
+                        <p class="text-neutral-500 font-light leading-relaxed mb-6 text-sm">
+                            The target is a flash image under 32KB — compared to SeaBIOS's 256KB+ — with POST times under 100 milliseconds on modern hardware. This makes inSeaBIOS particularly interesting for QEMU/KVM virtual machines where every millisecond of boot time matters, as well as for retro computing and embedded x86 systems where flash storage is limited.
+                        </p>
+                        <ul class="space-y-2.5 mb-8">
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-500">
+                                <span class="iconify text-neutral-600" data-icon="mdi:circle-outline" data-width="16"></span>
+                                Target: sub-100ms POST time on modern hardware
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-500">
+                                <span class="iconify text-neutral-600" data-icon="mdi:circle-outline" data-width="16"></span>
+                                Stripped down to approximately 32KB flash image
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-500">
+                                <span class="iconify text-neutral-600" data-icon="mdi:circle-outline" data-width="16"></span>
+                                Legacy BIOS and basic UEFI CSM support
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-500">
+                                <span class="iconify text-neutral-600" data-icon="mdi:circle-outline" data-width="16"></span>
+                                Designed for QEMU/KVM, embedded, and retro systems
+                            </li>
+                        </ul>
+                        <div class="btn-wip px-5 py-2.5 rounded-lg text-sm font-medium inline-flex items-center gap-2 text-neutral-500">
+                            <span class="iconify" data-icon="mdi:clock-outline" data-width="16"></span>
+                            Coming Soon
+                        </div>
+                    </div>
+                </div>
+
+                <!-- proboot -->
+                <div class="glass-card rounded-2xl p-8 group relative overflow-hidden transition-all duration-300 opacity-80">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="feature-icon w-14 h-14 rounded-2xl flex items-center justify-center">
+                                <span class="iconify text-amber-400" data-icon="mdi:boot" data-width="28"></span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="wip-tag text-[10px] px-2.5 py-1 rounded-full font-mono">WIP</span>
+                                <span class="project-tag text-[10px] px-2.5 py-1 rounded-full font-mono">Rust</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold tracking-tight mb-2">proboot — Fast Rust-Based Linux Bootloader</h3>
+                        <p class="text-neutral-400 font-light leading-relaxed mb-4">
+                            proboot is a next-generation Linux bootloader written entirely in Rust. It is designed as a modern replacement for GRUB2, which has accumulated significant technical debt over its 20+ year history. proboot aims to be faster, safer, and easier to configure.
+                        </p>
+                        <p class="text-neutral-500 font-light leading-relaxed mb-6 text-sm">
+                            Key planned features include native LUKS2 decryption (eliminating the need for a separate initramfs for many setups), TPM2 unlock support, a themeable TUI boot menu, and an automated GRUB-to-proboot migration tool. Rust's memory safety guarantees mean an entire class of bootloader bugs — buffer overflows, use-after-free — simply cannot exist in proboot by construction.
+                        </p>
+                        <ul class="space-y-2.5 mb-8">
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-500">
+                                <span class="iconify text-neutral-600" data-icon="mdi:circle-outline" data-width="16"></span>
+                                Written in Rust — memory safe by design
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-500">
+                                <span class="iconify text-neutral-600" data-icon="mdi:circle-outline" data-width="16"></span>
+                                Native LUKS2 and TPM2 unlock support
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-500">
+                                <span class="iconify text-neutral-600" data-icon="mdi:circle-outline" data-width="16"></span>
+                                Customizable boot menu with TUI themes
+                            </li>
+                            <li class="flex items-center gap-2.5 text-sm text-neutral-500">
+                                <span class="iconify text-neutral-600" data-icon="mdi:circle-outline" data-width="16"></span>
+                                Drop-in GRUB replacement with automated migration
+                            </li>
+                        </ul>
+                        <div class="btn-wip px-5 py-2.5 rounded-lg text-sm font-medium inline-flex items-center gap-2 text-neutral-500">
+                            <span class="iconify" data-icon="mdi:clock-outline" data-width="16"></span>
+                            Coming Soon
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Install -->
+    <section class="py-16 px-6">
+        <div class="max-w-3xl mx-auto content-section">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-4">Getting Started with infastracture</h2>
+            <p class="text-neutral-400 font-light leading-relaxed mb-8">
+                Installing infastracture tools is straightforward. cmshell builds with a single make command and installs to your PATH immediately. Atmos provides a ready-to-flash ISO image that you can write to any USB drive. Here is how to get started with the currently available projects.
+            </p>
+        </div>
+        <div class="max-w-3xl mx-auto">
+            <div class="code-block rounded-2xl p-6 glow-blue">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="iconify text-sky-400" data-icon="mdi:lightning-bolt" data-width="20"></span>
+                    <span class="text-sm font-semibold text-sky-300">Quick Install</span>
+                </div>
+                <div class="font-mono text-sm space-y-4 text-neutral-400">
+                    <div>
+                        <span class="text-neutral-600"># Clone and install cmshell</span><br>
+                        <span class="text-sky-400">$</span> git clone https://github.com/infastracture/cmshell<br>
+                        <span class="text-sky-400">$</span> cd cmshell && sudo make install<br>
+                        <span class="text-sky-400">$</span> cmshell
+                    </div>
+                    <div>
+                        <span class="text-neutral-600"># Download and flash Atmos ISO</span><br>
+                        <span class="text-sky-400">$</span> wget https://atmos.infastracture.xyz/downloads/atmos-latest.iso<br>
+                        <span class="text-sky-400">$</span> sudo dd if=atmos-latest.iso of=/dev/sdX bs=4M status=progress && sync
+                    </div>
+                    <div>
+                        <span class="text-neutral-600"># Or visit Atmos in your browser</span><br>
+                        <span class="text-sky-400">$</span> <span class="text-sky-300">open https://atmos.infastracture.xyz</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Minimal Tools Matter -->
+    <section class="py-16 px-6">
+        <div class="max-w-3xl mx-auto content-section">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-4">Why Minimal Linux Tools Matter</h2>
+            <p class="text-neutral-400 font-light leading-relaxed">
+                The Linux ecosystem has a bloat problem. Tools that started as simple utilities have accumulated features, configuration options, and dependencies over decades. The bash shell, for example, contains over 2,000 lines of shell script just for its startup sequence. GRUB2's codebase includes support for file systems and hardware that have been obsolete for years.
+            </p>
+            <p class="text-neutral-400 font-light leading-relaxed">
+                This bloat is not free. Every extra line of code means more attack surface for security vulnerabilities. Every unnecessary dependency means more packages to update and more potential points of failure. Every millisecond of startup time adds up when you are booting hundreds of virtual machines or working in a terminal all day.
+            </p>
+            <p class="text-neutral-400 font-light leading-relaxed">
+                infastracture takes a different approach. We start from scratch and only implement what is actually needed. The result is tools that are faster to start, smaller to distribute, easier to audit for security, and simpler to maintain. This is not a new idea — it is the original Unix philosophy. We are just applying it to infrastructure software that has lost its way.
+            </p>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400 mb-4 block">Design Principles</span>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">What makes infastracture <span class="text-sky-400">different</span></h2>
+                <p class="text-neutral-400 font-light max-w-2xl mx-auto">
+                    Every project follows the same set of core principles. These are not aspirational goals — they are hard constraints that we enforce during code review.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-7 hover:border-sky-500/20 transition-all duration-300">
+                    <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+                        <span class="iconify text-sky-400" data-icon="mdi:minimize" data-width="24"></span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3">Zero Bloat</h3>
+                    <p class="text-sm text-neutral-400 font-light leading-relaxed">Every project is stripped to its absolute essentials. No unnecessary features, no hidden dependencies, no code that serves legacy use cases. If a feature is not used by at least half our users, it does not ship.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-7 hover:border-sky-500/20 transition-all duration-300">
+                    <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+                        <span class="iconify text-sky-400" data-icon="mdi:speedometer" data-width="24"></span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3">Blazing Fast</h3>
+                    <p class="text-sm text-neutral-400 font-light leading-relaxed">Sub-millisecond shell startup, sub-100ms BIOS POST, instant bootloader handoff. We benchmark every release against the tools we are replacing and refuse to ship if we are not significantly faster.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-7 hover:border-sky-500/20 transition-all duration-300">
+                    <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+                        <span class="iconify text-sky-400" data-icon="mdi:open-source-initiative" data-width="24"></span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3">Fully Open Source</h3>
+                    <p class="text-sm text-neutral-400 font-light leading-relaxed">All projects use MIT or GPL licenses. There is no telemetry, no phone-home, no premium tier, and no "open core" model. The source code you see is everything there is.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-7 hover:border-sky-500/20 transition-all duration-300">
+                    <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+                        <span class="iconify text-sky-400" data-icon="mdi:palette" data-width="24"></span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3">Ricer-Friendly</h3>
+                    <p class="text-sm text-neutral-400 font-light leading-relaxed">Built by members of the ricing community, for the ricing community. Every project supports deep theming, custom colors, and visual configuration out of the box — not as an afterthought.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-7 hover:border-sky-500/20 transition-all duration-300">
+                    <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+                        <span class="iconify text-sky-400" data-icon="mdi:shield-check" data-width="24"></span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3">Security First</h3>
+                    <p class="text-sm text-neutral-400 font-light leading-relaxed">We use memory-safe languages wherever possible. proboot is written in Rust. cmshell avoids dynamic memory allocation entirely. Smaller codebases mean fewer places for bugs to hide.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-7 hover:border-sky-500/20 transition-all duration-300">
+                    <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+                        <span class="iconify text-sky-400" data-icon="mdi:document-text" data-width="24"></span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3">Well Documented</h3>
+                    <p class="text-sm text-neutral-400 font-light leading-relaxed">Comprehensive README files, inline code comments, and wiki documentation. Our rule: if a new user cannot figure out how to use a tool within five minutes, that is a bug we need to fix.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="py-16 px-6">
+        <div class="max-w-3xl mx-auto content-section">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-4">Who Uses infastracture Tools?</h2>
+            <p class="text-neutral-400 font-light leading-relaxed mb-6">
+                infastracture projects are built for a specific audience: people who care deeply about how their systems work. Here are some of the use cases our tools are designed for.
+            </p>
+            <h3 class="text-xl font-semibold mb-3 text-sky-300">Linux Ricing Enthusiasts</h3>
+            <p class="text-neutral-400 font-light leading-relaxed mb-6">
+                The ricing community — users who obsessively customize their desktop environments, terminal emulators, and system themes — is the primary audience for cmshell and Atmos. These users want tools that look good, start fast, and can be configured to match their aesthetic. cmshell's ANSI prompt support and Atmos's pre-built theme system are designed specifically for this workflow.
+            </p>
+            <h3 class="text-xl font-semibold mb-3 text-sky-300">System Administrators and DevOps</h3>
+            <p class="text-neutral-400 font-light leading-relaxed mb-6">
+                When you are managing hundreds or thousands of Linux machines, every millisecond of boot time and every kilobyte of disk space matters. inSeaBIOS's tiny flash image and sub-100ms POST time make it interesting for large-scale virtualization deployments where GRUB or SeaBIOS add unnecessary overhead to every VM boot.
+            </p>
+            <h3 class="text-xl font-semibold mb-3 text-sky-300">Embedded and Retro Computing</h3>
+            <p class="text-neutral-400 font-light leading-relaxed">
+                Embedded x86 systems often have severely limited flash storage — sometimes as little as 64KB for the entire firmware. inSeaBIOS's 32KB target size makes it one of the few open-source BIOS implementations that can fit in these constraints. Retro computing enthusiasts also benefit from faster boot times on older hardware.
+            </p>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap" class="py-24 px-6">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400 mb-4 block">Roadmap</span>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">What is <span class="text-sky-400">coming next</span></h2>
+                <p class="text-neutral-400 font-light max-w-xl mx-auto">
+                    This is our planned development timeline. Dates are estimates and may shift as priorities change, but we try to ship on schedule.
+                </p>
+            </div>
+            <div class="relative">
+                <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px timeline-line md:-translate-x-px"></div>
+                <div class="space-y-12">
+                    <div class="relative flex items-start gap-8 md:gap-0">
+                        <div class="hidden md:block md:w-1/2 md:pr-12 md:text-right">
+                            <span class="text-xs font-mono text-sky-400">Q1 2025</span>
+                            <h3 class="text-lg font-semibold mt-1">cmshell 2.0</h3>
+                            <p class="text-sm text-neutral-400 mt-1 font-light">Plugin system using shared libraries, Lua scripting support for prompt customization, and built-in syntax highlighting for terminal output.</p>
+                        </div>
+                        <div class="relative z-10 w-8 h-8 rounded-full bg-sky-500/20 border-2 border-sky-400 flex-shrink-0 md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center justify-center">
+                            <div class="w-2.5 h-2.5 rounded-full bg-sky-400"></div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 md:hidden">
+                            <span class="text-xs font-mono text-sky-400">Q1 2025</span>
+                            <h3 class="text-lg font-semibold mt-1">cmshell 2.0</h3>
+                            <p class="text-sm text-neutral-400 mt-1 font-light">Plugin system using shared libraries, Lua scripting support for prompt customization, and built-in syntax highlighting for terminal output.</p>
+                        </div>
+                        <div class="hidden md:block md:w-1/2 md:pl-12"></div>
+                    </div>
+                    <div class="relative flex items-start gap-8 md:gap-0">
+                        <div class="hidden md:block md:w-1/2 md:pr-12"></div>
+                        <div class="relative z-10 w-8 h-8 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex-shrink-0 md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center justify-center">
+                            <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <span class="text-xs font-mono text-emerald-400">Q2 2025</span>
+                            <h3 class="text-lg font-semibold mt-1">proboot 1.0 Stable</h3>
+                            <p class="text-sm text-neutral-400 mt-1 font-light">First stable release with Secure Boot support, Btrfs snapshot booting, automatic kernel fallback, and the GRUB migration tool.</p>
+                        </div>
+                    </div>
+                    <div class="relative flex items-start gap-8 md:gap-0">
+                        <div class="hidden md:block md:w-1/2 md:pr-12 md:text-right">
+                            <span class="text-xs font-mono text-violet-400">Q3 2025</span>
+                            <h3 class="text-lg font-semibold mt-1">Atmos 27.1</h3>
+                            <p class="text-sm text-neutral-400 mt-1 font-light">Built on the next Hyprland release with a completely redesigned theme engine, GTK4 application port, and cloud sync for dotfiles across machines.</p>
+                        </div>
+                        <div class="relative z-10 w-8 h-8 rounded-full bg-violet-500/20 border-2 border-violet-400 flex-shrink-0 md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center justify-center">
+                            <div class="w-2.5 h-2.5 rounded-full bg-violet-400"></div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 md:hidden">
+                            <span class="text-xs font-mono text-violet-400">Q3 2025</span>
+                            <h3 class="text-lg font-semibold mt-1">Atmos 27.1</h3>
+                            <p class="text-sm text-neutral-400 mt-1 font-light">Built on the next Hyprland release with a completely redesigned theme engine, GTK4 application port, and cloud sync for dotfiles across machines.</p>
+                        </div>
+                        <div class="hidden md:block md:w-1/2 md:pl-12"></div>
+                    </div>
+                    <div class="relative flex items-start gap-8 md:gap-0">
+                        <div class="hidden md:block md:w-1/2 md:pr-12"></div>
+                        <div class="relative z-10 w-8 h-8 rounded-full bg-amber-500/20 border-2 border-amber-400 flex-shrink-0 md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center justify-center">
+                            <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <span class="text-xs font-mono text-amber-400">Q4 2025</span>
+                            <h3 class="text-lg font-semibold mt-1">inSeaBIOS UEFI</h3>
+                            <p class="text-sm text-neutral-400 mt-1 font-light">Native UEFI firmware mode with graphical configuration menu, PXE network boot support, and compatibility with modern UEFI-only hardware.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-24 px-6">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400 mb-4 block">FAQ</span>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+                <p class="text-neutral-400 font-light">Answers to common questions about infastracture and its projects.</p>
+            </div>
+            <div class="space-y-3" id="faq-container">
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="font-medium text-sm pr-4">What is infastracture?</span>
+                        <span class="iconify faq-chevron text-neutral-500 flex-shrink-0" data-icon="mdi:chevron-down" data-width="20"></span>
+                    </button>
+                    <div class="faq-answer px-6 text-sm text-neutral-400 font-light leading-relaxed">
+                        infastracture is an open-source project that builds minimal, fast infrastructure tools for Linux. It currently includes four projects: Atmos (a Hyprland-based desktop OS), cmshell (a minimal shell written in C), inSeaBIOS (a lightweight BIOS implementation), and proboot (a Rust-based bootloader). All projects are free and open source.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="font-medium text-sm pr-4">What is Atmos?</span>
+                        <span class="iconify faq-chevron text-neutral-500 flex-shrink-0" data-icon="mdi:chevron-down" data-width="20"></span>
+                    </button>
+                    <div class="faq-answer px-6 text-sm text-neutral-400 font-light leading-relaxed">
+                        Atmos is a Linux desktop operating system built on top of Hyprland, a Wayland tiling compositor. It comes with a pre-configured cool theme, custom animations, and a complete workflow out of the box. You can download an ISO from atmos.infastracture.xyz, flash it to a USB drive, and install it on any modern computer.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="font-medium text-sm pr-4">What is cmshell?</span>
+                        <span class="iconify faq-chevron text-neutral-500 flex-shrink-0" data-icon="mdi:chevron-down" data-width="20"></span>
+                    </button>
+                    <div class="faq-answer px-6 text-sm text-neutral-400 font-light leading-relaxed">
+                        cmshell is a minimal UNIX shell written in C. It compiles to a binary under 5KB with zero runtime dependencies. Despite its small size, it includes features like tab completion, command history, and customizable ANSI-colored prompts. It is designed for ricing enthusiasts and users who want a fast, lightweight terminal.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="font-medium text-sm pr-4">Are inSeaBIOS and proboot available yet?</span>
+                        <span class="iconify faq-chevron text-neutral-500 flex-shrink-0" data-icon="mdi:chevron-down" data-width="20"></span>
+                    </button>
+                    <div class="faq-answer px-6 text-sm text-neutral-400 font-light leading-relaxed">
+                        No, both inSeaBIOS and proboot are currently works in progress. inSeaBIOS is a stripped-down BIOS implementation targeting sub-100ms POST times, and proboot is a Rust-based bootloader designed to replace GRUB. You can follow their progress on the roadmap section of this page.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="font-medium text-sm pr-4">Is infastracture free to use?</span>
+                        <span class="iconify faq-chevron text-neutral-500 flex-shrink-0" data-icon="mdi:chevron-down" data-width="20"></span>
+                    </button>
+                    <div class="faq-answer px-6 text-sm text-neutral-400 font-light leading-relaxed">
+                        Yes, completely. All infastracture projects are released under permissive open-source licenses (MIT or GPL). There is no premium tier, no paid features, no telemetry, and no hidden costs. You can use them, modify them, and redistribute them however you want.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="font-medium text-sm pr-4">How can I support infastracture?</span>
+                        <span class="iconify faq-chevron text-neutral-500 flex-shrink-0" data-icon="mdi:chevron-down" data-width="20"></span>
+                    </button>
+                    <div class="faq-answer px-6 text-sm text-neutral-400 font-light leading-relaxed">
+                        You can support infastracture by donating via PayPal (any amount helps cover hosting and development costs), starring the GitHub repositories to increase visibility, or joining the Discord community to provide feedback and bug reports.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="font-medium text-sm pr-4">What Linux distributions does cmshell work on?</span>
+                        <span class="iconify faq-chevron text-neutral-500 flex-shrink-0" data-icon="mdi:chevron-down" data-width="20"></span>
+                    </button>
+                    <div class="faq-answer px-6 text-sm text-neutral-400 font-light leading-relaxed">
+                        cmshell is written in standard C with no external dependencies, so it compiles and runs on virtually any Linux distribution — Arch, Fedora, Debian, Ubuntu, Alpine, Gentoo, and others. It also works on BSD systems with minimal modifications. See the GitHub repository for build instructions.
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="font-medium text-sm pr-4">What is Atmos 27.1?</span>
+                        <span class="iconify faq-chevron text-neutral-500 flex-shrink-0" data-icon="mdi:chevron-down" data-width="20"></span>
+                    </button>
+                    <div class="faq-answer px-6 text-sm text-neutral-400 font-light leading-relaxed">
+                        Atmos 27.1 is the next major release of Atmos, planned for Q3 2025. It will be built on the next version of Hyprland and includes a completely redesigned theme engine, a GTK4 application port, and cloud sync for dotfiles so your configuration follows you across machines.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contribute / Donate -->
+    <section id="contribute" class="py-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400 mb-4 block">Support the Project</span>
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Keep the <span class="text-sky-400">infrastructure</span> alive</h2>
+                <p class="text-neutral-400 font-light max-w-xl mx-auto">
+                    infastracture is maintained entirely in free time. Donations help cover domain registration, server hosting, CI/CD runners, and development tools. Every contribution makes a difference.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="donate-card rounded-2xl p-8 text-center relative" data-amount="5" onclick="selectAmount(this)">
+                    <div class="donate-check absolute top-4 right-4 w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center">
+                        <span class="iconify text-white" data-icon="mdi:check" data-width="14"></span>
+                    </div>
+                    <div class="feature-icon w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                        <span class="iconify text-sky-400" data-icon="mdi:coffee" data-width="32"></span>
+                    </div>
+                    <div class="text-4xl font-bold mb-2 stat-number">$5</div>
+                    <div class="text-sm text-neutral-400 font-medium mb-3">A coffee</div>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed">Covers a month of domain registration for the project.</p>
+                </div>
+                <div class="donate-card rounded-2xl p-8 text-center relative" data-amount="10" onclick="selectAmount(this)">
+                    <div class="donate-check absolute top-4 right-4 w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center">
+                        <span class="iconify text-white" data-icon="mdi:check" data-width="14"></span>
+                    </div>
+                    <div class="feature-icon w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                        <span class="iconify text-emerald-400" data-icon="mdi:heart" data-width="32"></span>
+                    </div>
+                    <div class="text-4xl font-bold mb-2 stat-number">$10</div>
+                    <div class="text-sm text-neutral-400 font-medium mb-3">A supporter</div>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed">Helps pay for CI/CD runners and release hosting costs.</p>
+                </div>
+                <div class="donate-card rounded-2xl p-8 text-center relative" data-amount="20" onclick="selectAmount(this)">
+                    <div class="donate-check absolute top-4 right-4 w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center">
+                        <span class="iconify text-white" data-icon="mdi:check" data-width="14"></span>
+                    </div>
+                    <div class="feature-icon w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                        <span class="iconify text-amber-400" data-icon="mdi:rocket-launch" data-width="32"></span>
+                    </div>
+                    <div class="text-4xl font-bold mb-2 stat-number">$20</div>
+                    <div class="text-sm text-neutral-400 font-medium mb-3">A champion</div>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed">Covers a full month of server hosting and development tools.</p>
+                </div>
+            </div>
+            <div class="blue-gradient-card rounded-2xl p-8 md:p-10 border border-white/5 mb-8">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="flex-1 w-full">
+                        <label class="text-sm text-neutral-400 mb-2 block">Or enter a custom amount</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 font-semibold">$</span>
+                            <input type="number" id="custom-amount" min="1" placeholder="25" class="w-full pl-8 pr-4 py-3.5 rounded-xl bg-black/30 border border-white/10 text-white text-sm placeholder-neutral-600 focus:outline-none focus:border-sky-500/50 transition-colors font-mono">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-auto flex-shrink-0">
+                        <button id="donate-btn" onclick="handleDonate()" class="w-full md:w-auto btn-primary px-10 py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2.5">
+                            <span class="iconify" data-icon="mdi:paypal" data-width="20"></span>
+                            Donate with PayPal
+                        </button>
+                    </div>
+                </div>
+                <div id="donate-msg" class="mt-4 text-sm hidden"></div>
+                <div class="flex items-center gap-2 mt-5 text-xs text-neutral-600">
+                    <span class="iconify" data-icon="mdi:lock" data-width="14"></span>
+                    <span>Secure PayPal checkout · Sent to AhmedElamir76 · No data stored</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-card rounded-xl p-5 flex items-start gap-4">
+                    <span class="iconify text-sky-400/60 mt-0.5 flex-shrink-0" data-icon="mdi:server" data-width="20"></span>
+                    <div>
+                        <div class="text-sm font-medium mb-1">Server Hosting</div>
+                        <div class="text-xs text-neutral-500 font-light">CI runners, release mirrors, and project websites.</div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-5 flex items-start gap-4">
+                    <span class="iconify text-sky-400/60 mt-0.5 flex-shrink-0" data-icon="mdi:web" data-width="20"></span>
+                    <div>
+                        <div class="text-sm font-medium mb-1">Domains and CDN</div>
+                        <div class="text-xs text-neutral-500 font-light">Keeping infastracture.xyz fast and accessible worldwide.</div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl p-5 flex items-start gap-4">
+                    <span class="iconify text-sky-400/60 mt-0.5 flex-shrink-0" data-icon="mdi:code-braces" data-width="20"></span>
+                    <div>
+                        <div class="text-sm font-medium mb-1">Development Tools</div>
+                        <div class="text-xs text-neutral-500 font-light">Licenses, IDEs, and testing hardware for firmware work.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 text-center">
+                <a href="https://github.com/infastracture" target="_blank" class="btn-secondary px-6 py-3 rounded-xl text-sm font-medium inline-flex items-center gap-2">
+                    <span class="iconify" data-icon="mdi:star" data-width="16"></span>
+                    Star the repos on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-16 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+                <div class="col-span-2 lg:col-span-1">
+                    <a href="#" class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center font-semibold text-sm">i</div>
+                        <span class="font-semibold tracking-tight">infastracture</span>
+                    </a>
+                    <p class="text-sm text-neutral-500 font-light leading-relaxed mb-4">Open source infrastructure tools built with obsession over every detail.</p>
+                    <div class="flex items-center gap-3">
+                        <a href="https://github.com/infastracture" target="_blank" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/20 transition-all">
+                            <span class="iconify" data-icon="mdi:github" data-width="18"></span>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/20 transition-all">
+                            <span class="iconify" data-icon="ic:baseline-discord" data-width="18"></span>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/20 transition-all">
+                            <span class="iconify" data-icon="mdi:matrix" data-width="18"></span>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-4">Projects</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="https://atmos.infastracture.xyz" target="_blank" class="text-sm text-neutral-500 hover:text-white transition-colors">Atmos</a></li>
+                        <li><a href="https://github.com/infastracture/cmshell" target="_blank" class="text-sm text-neutral-500 hover:text-white transition-colors">cmshell</a></li>
+                        <li><span class="text-sm text-neutral-600">inSeaBIOS <span class="text-[10px] text-amber-500/60 font-mono ml-1">WIP</span></span></li>
+                        <li><span class="text-sm text-neutral-600">proboot <span class="text-[10px] text-amber-500/60 font-mono ml-1">WIP</span></span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-4">Resources</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#about" class="text-sm text-neutral-500 hover:text-white transition-colors">About</a></li>
+                        <li><a href="#roadmap" class="text-sm text-neutral-500 hover:text-white transition-colors">Roadmap</a></li>
+                        <li><a href="#features" class="text-sm text-neutral-500 hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#faq" class="text-sm text-neutral-500 hover:text-white transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-4">Community</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#" class="text-sm text-neutral-500 hover:text-white transition-colors">Discord</a></li>
+                        <li><a href="#" class="text-sm text-neutral-500 hover:text-white transition-colors">Matrix</a></li>
+                        <li><a href="https://github.com/infastracture" target="_blank" class="text-sm text-neutral-500 hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="#contribute" class="text-sm text-neutral-500 hover:text-white transition-colors">Donate</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-4">Legal</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#" class="text-sm text-neutral-500 hover:text-white transition-colors">MIT License</a></li>
+                        <li><a href="#" class="text-sm text-neutral-500 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-sm text-neutral-500 hover:text-white transition-colors">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-neutral-600">© 2025 infastracture. All rights reserved.</p>
+                <p class="text-xs text-neutral-600">Built with <span class="text-sky-400/50">♥</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileClose = document.getElementById('mobile-menu-close');
+        const mobileOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        function openMenu() { mobileMenu.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+        function closeMenu() { mobileMenu.classList.add('hidden'); document.body.style.overflow = ''; }
+        mobileBtn.addEventListener('click', openMenu);
+        mobileClose.addEventListener('click', closeMenu);
+        mobileOverlay.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+        // FAQ accordion
+        function toggleFaq(btn) {
+            const answer = btn.nextElementSibling;
+            const chevron = btn.querySelector('.faq-chevron');
+            const isOpen = answer.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.faq-chevron').forEach(c => c.classList.remove('open'));
+            // Open clicked if it was closed
+            if (!isOpen) {
+                answer.classList.add('open');
+                chevron.classList.add('open');
+            }
+        }
+
+        // Donate
+        let selectedAmount = null;
+        function selectAmount(el) {
+            document.querySelectorAll('.donate-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedAmount = el.dataset.amount;
+            document.getElementById('custom-amount').value = '';
+        }
+        document.getElementById('custom-amount').addEventListener('input', function() {
+            if (this.value) {
+                document.querySelectorAll('.donate-card').forEach(c => c.classList.remove('selected'));
+                selectedAmount = null;
+            }
+        });
+        function handleDonate() {
+            const customVal = document.getElementById('custom-amount').value;
+            const amount = customVal ? customVal : selectedAmount;
+            const msgEl = document.getElementById('donate-msg');
+            if (!amount || amount <= 0) {
+                msgEl.classList.remove('hidden');
+                msgEl.className = 'mt-4 text-sm text-red-400';
+                msgEl.textContent = 'Please select or enter an amount first.';
+                return;
+            }
+            window.open(`https://www.paypal.com/donate/?business=AhmedElamir76&amount=${encodeURIComponent(amount)}&currency_code=USD`, '_blank');
+            msgEl.classList.remove('hidden');
+            msgEl.className = 'mt-4 text-sm text-emerald-400';
+            msgEl.textContent = `Redirecting to PayPal for $${amount}... Thank you for supporting infastracture!`;
+        }
+
+        // Scroll fade-in
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+        document.querySelectorAll('section > div').forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `opacity 0.6s ease ${i * 0.03}s, transform 0.6s ease ${i * 0.03}s`;
+            observer.observe(el);
+        });
+        const hero = document.querySelector('section > div');
+        if (hero) { hero.style.opacity = '1'; hero.style.transform = 'translateY(0)'; }
+    </script>
+</body>
+</html>
