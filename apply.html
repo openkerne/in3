@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply — infastracture</title>
+    <meta name="description" content="Join infastracture. We're hiring open-source developers, designers, and infrastructure engineers to build the future of minimal Linux tools.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Apply to Work at infastracture">
+    <meta property="og:description" content="Join our team of open-source developers building minimal Linux infrastructure tools.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://infastracture.xyz/apply">
+    <link rel="canonical" href="https://infastracture.xyz/apply">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1a1a2e;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid #e5e7eb;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+        .top-bar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #1a1a2e;
+        }
+        .top-bar-logo-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .top-bar-logo-text {
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: -0.01em;
+        }
+        .top-bar-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 150ms;
+        }
+        .top-bar-back:hover { color: #1a1a2e; }
+
+        /* Hero card */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 24px 60px;
+        }
+        .hero-card {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 56px 44px 48px;
+            text-align: center;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        /* Logo inside card */
+        .card-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 22px;
+            margin: 0 auto 32px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+        .card-heading {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.025em;
+            color: #0f172a;
+            margin-bottom: 28px;
+        }
+        .card-divider {
+            width: 48px;
+            height: 3px;
+            background: linear-gradient(90deg, #0ea5e9, #2563eb);
+            border-radius: 2px;
+            margin: 0 auto 28px;
+        }
+
+        .card-body p {
+            font-size: 15px;
+            line-height: 1.75;
+            color: #4b5563;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+        .card-body p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        /* Roles list */
+        .roles-section {
+            margin-top: 36px;
+            text-align: left;
+            border-top: 1px solid #f3f4f6;
+            padding-top: 28px;
+        }
+        .roles-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #9ca3af;
+            margin-bottom: 16px;
+        }
+        .role-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f9fafb;
+        }
+        .role-item:last-child { border-bottom: none; }
+        .role-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #2563eb;
+            flex-shrink: 0;
+        }
+        .role-text {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+        }
+        .role-tag {
+            margin-left: auto;
+            font-size: 11px;
+            font-weight: 500;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 3px 10px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+
+        /* CTA area */
+        .cta-section {
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid #f3f4f6;
+        }
+        .cta-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .apply-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 200ms;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+        }
+        .apply-btn:hover {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 6px 30px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+        .apply-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer note */
+        .card-footer {
+            margin-top: 28px;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+        .card-footer a {
+            color: #6b7280;
+            text-decoration: none;
+            border-bottom: 1px solid #d1d5db;
+            transition: color 150ms, border-color 150ms;
+        }
+        .card-footer a:hover {
+            color: #2563eb;
+            border-color: #2563eb;
+        }
+
+        /* Floating shapes (subtle) */
+        .bg-shape {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-shape-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(37,99,235,0.03) 0%, transparent 70%);
+            top: -150px;
+            right: -150px;
+        }
+        .bg-shape-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(14,165,233,0.03) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-card { animation: fadeUp 0.7s ease-out; }
+
+        @media (max-width: 560px) {
+            .hero-card {
+                padding: 40px 28px 36px;
+                border-radius: 20px;
+            }
+            .card-heading {
+                font-size: 26px;
+            }
+            .role-tag {
+                display: none;
+            }
+            .top-bar {
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background shapes -->
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+
+    <!-- Top bar -->
+    <div class="top-bar">
+        <a href="/" class="top-bar-logo">
+            <div class="top-bar-logo-icon">i</div>
+            <span class="top-bar-logo-text">infastracture</span>
+        </a>
+        <a href="/" class="top-bar-back">
+            <span class="iconify" data-icon="mdi:arrow-left" data-width="16"></span>
+            Back to site
+        </a>
+    </div>
+
+    <!-- Main content -->
+    <div class="hero-section">
+        <div class="hero-card">
+
+            <div class="card-logo">i</div>
+
+            <div class="card-title">infastracture</div>
+            <h1 class="card-heading">Apply to work<br>with us.</h1>
+            <div class="card-divider"></div>
+
+            <div class="card-body">
+                <p>
+                    We are looking for people who care about the same things we do — minimalism, performance, and clean code. If you spend your free time configuring dotfiles, reading firmware datasheets, or rewriting tools from scratch just to make them 2KB smaller, you will fit right in.
+                </p>
+                <p>
+                    infastracture is a fully remote, open-source organization. There are no office hours, no mandatory meetings, and no corporate layers. You contribute on your own schedule, own your work, and ship directly to the repositories. We judge output, not hours.
+                </p>
+                <p>
+                    These are paid positions. Compensation depends on your experience and the role, but we believe in paying fairly for good work — even in open source.
+                </p>
+            </div>
+
+            <div class="roles-section">
+                <div class="roles-title">Open Roles</div>
+                <div class="role-item">
+                    <div class="role-dot"></div>
+                    <span class="role-text">Systems Developer (C / Rust)</span>
+                    <span class="role-tag">Remote</span>
+                </div>
+                <div class="role-item">
+                    <div class="role-dot"></div>
+                    <span class="role-text">Hyprland / Wayland Theming</span>
+                    <span class="role-tag">Remote</span>
+                </div>
+                <div class="role-item">
+                    <div class="role-dot"></div>
+                    <span class="role-text">Firmware Engineer (x86)</span>
+                    <span class="role-tag">Remote</span>
+                </div>
+                <div class="role-item">
+                    <div class="role-dot"></div>
+                    <span class="role-text">Technical Writer</span>
+                    <span class="role-tag">Remote</span>
+                </div>
+                <div class="role-item">
+                    <div class="role-dot"></div>
+                    <span class="role-text">UI / UX Designer</span>
+                    <span class="role-tag">Remote</span>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <p class="cta-text">Press this button to apply with Cliip Forms.</p>
+                <a href="https://cliip.net/2h6j4rx0" target="_blank" class="apply-btn">
+                    <span class="iconify" data-icon="mdi:send" data-width="18"></span>
+                    Apply Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
